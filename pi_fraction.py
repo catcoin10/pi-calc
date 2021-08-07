@@ -5,8 +5,9 @@ from mpmath import *
 import sys
 
 mp.dps = 120 # go to 100 just in case could easily be way less -- like <25
-global Pi
+global Pi, pistr
 Pi = +pi
+pistr = str(Pi)
 
 # check if a number is prime
 def isprime(n):
@@ -26,30 +27,30 @@ def nextprime(n):
 	while not isprime(n):	n += 2 # simple while loop that adds to number
 	return n
 
-# how much data is in this number?
-def data_count(n):
-	pi_multiple = int(n*Pi) + 1
-	pi_divide = pi_multiple / n
-	log_diff = log(abs(pi_divide-Pi), 10) * -1
-	information_content = log((pi_multiple*n), 10)
-	log_n = log(n, 10)
-	return (log_diff - information_content) #+ log_n
-
-def pi_multiply(n):
+def pi_multiply(n): # this number gets us as close to pi as we can as far as we know
 	return int(n*Pi) + 1
 
+# how much digits match Pi here?
+def digit_count(n):
+	x = mpf(pi_multiply(n)/n) # what is the answer?
+	x = str(x) # make a string
+	digits_alike = 0 # also the index, somewhat misnomer
+	for i in pistr:
+		if i == x[digits_alike]: digits_alike += 1
+		else:			break
+	return digits_alike - 2 + 1 # exclude "3.", but remember we count from 0
 
-def data_find(min_quit):
+def data_find():
+	x = 115 # start above the only known example: 113 -- we can change it or even multithread with modulus but still
 	count = 0
-	n = start_n = int(sys.argv[2])
-	distance = -2 # start program at -2 and then chnage
-	while distance < min_quit: # this is the minimum required to quit
-		distance = data_count(n)
-		n = nextprime(n) # increment
+	digits = len(str(pi_multiply(x))) + len(str(x))
+	while digit_count(x) < digits:
+		x = nextprime(x)
+		digits = len(str(pi_multiply(x))) + len(str(x))
 		count += 1
-		if (count % 10**4)==0:	print(n)
-	return [n, pi_multiply(n), str(distance)[:12]]
+		if (count % 100000) == 0: print(x)
+	return [x, pi_multiply(x)]
 
 
-x = sys.argv[1]
-print(data_find(mpf(x)))
+
+print(data_find())
