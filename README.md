@@ -1,5 +1,5 @@
 # pi-calc
-This is a python program that tries to find numbers where the amount of accurate data about pi encoded in a given fraction exceeds such approximation. Largest known example: 938,466/298,723
+This is a python program that tries to find numbers where the amount of accurate data about pi encoded in a given fraction exceeds such approximation. Only known example: 355 / 113.
 
 <!-- There is (probably) no hope of finding a number other than (355/113) where the number of digits *in a fraction, both numerator and denominator* exceeds that information encoded. -->
 
